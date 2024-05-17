@@ -1,13 +1,11 @@
 package dev.jeppu.bookstore.catalog;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
-@SpringBootTest
-class CatalogServiceApplicationTests {
+@Import(ContainersConfig.class)
+class CatalogServiceApplicationTests extends AbstractIntTest {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {}
 }
