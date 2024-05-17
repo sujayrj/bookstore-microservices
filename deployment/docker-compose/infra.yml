@@ -4,6 +4,7 @@ services:
   catalog-db:
     image: postgres:16-alpine
     container_name: catalog-db
+    platform: linux/x86_64
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
