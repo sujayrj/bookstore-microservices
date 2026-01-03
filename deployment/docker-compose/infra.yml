@@ -1,0 +1,24 @@
+name: "bookstore-microservices"
+services:
+  catalog-db:
+    image: postgres:16-alpine
+    container_name: catalog-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_ROOT_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ROOT_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "15432:5432"
+    deploy:
+      resources:
+        limits:
+          memory: 750m
+    restart: unless-stopped
+
+    volumes:
+      - catalog_db_data:/var/lib/postgresql/data
+      - ./catalog-db-init:/docker-entrypoint-initdb.d
+
+volumes:
+  catalog_db_data:
+    name: catalog_db_data
