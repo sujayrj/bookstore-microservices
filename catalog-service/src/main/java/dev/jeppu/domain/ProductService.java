@@ -1,7 +1,9 @@
 package dev.jeppu.domain;
 
 import dev.jeppu.ApplicationProperties;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class ProductService {
     private final ProductRepository productRepository;
     private final ApplicationProperties properties;
@@ -30,5 +33,13 @@ public class ProductService {
                 productPage.hasPrevious(),
                 productPage.getContent());
         return pagedResult;
+    }
+
+    public ProductResponseDTO getProductByCode(String productCode) {
+        Optional<ProductEntity> productEntity = productRepository.findProductEntityByCode(productCode);
+        ProductEntity foundProduct = productEntity.orElseThrow(() -> ProductNotFoundException.forCode(productCode));
+        log.info("Product found with code : {} ", productCode);
+        ProductResponseDTO responseDTO = ProductMapper.mapToProductResponse(foundProduct);
+        return responseDTO;
     }
 }
