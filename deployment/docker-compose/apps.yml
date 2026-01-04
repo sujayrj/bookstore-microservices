@@ -1,0 +1,27 @@
+name: "bookstore-microservices"
+services:
+  catalog-service:
+    image: jeppu/bookstore-catalog-service
+    container_name: catalog-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CATALOG_DB_URL=jdbc:postgresql://catalog-db:5432/catalog_db
+      - CATALOG_DB_USER=sujay
+      - CATALOG_DB_PWD=password
+    ports:
+      - "${CATALOG_SERVICE_PORT}:8081"
+    restart: unless-stopped
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+    # Add logging driver configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    deploy:
+      resources:
+        limits:
+          memory: 700m
