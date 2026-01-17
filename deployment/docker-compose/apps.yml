@@ -1,0 +1,16 @@
+name: "Bookstore Microservices Apps Docker Compose"
+services:
+  catalog-app:
+    container_name: catalog-app
+    image: jeppu/bookstore-catalog-service
+    ports:
+      - "${CATALOG_APP_HOST_PORT}:8071"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CATALOG_DB_URL: jdbc:postgresql://catalog-db:5432/catalog_db
+      CATALOG_DB_USER: "${CATALOG_DB_USER}"
+      CATALOG_DB_PWD: "${CATALOG_DB_PWD}"
+    restart: unless-stopped
+    depends_on:
+      catalog-db:
+        condition: service_healthy
