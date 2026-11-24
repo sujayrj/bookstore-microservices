@@ -1,0 +1,62 @@
+
+name: Catalog Service CI
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'catalog-service/**'
+      - '.mvn/**'
+      - 'mvnw'
+      - 'pom.xml'
+      - '.github/workflows/catalog-service.yml'
+
+  pull_request:
+    paths:
+      - 'catalog-service/**'
+      - '.mvn/**'
+      - 'mvnw'
+      - 'pom.xml'
+      - '.github/workflows/catalog-service.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            catalog-service/pom.xml
+
+      - name: Build and test
+        run: ./mvnw -ntp -pl catalog-service verify
+
+      - name: Login to Docker Hub
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and publish Docker image
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        run: |
+          ./mvnw -pl catalog-service spring-boot:build-image -DskipTests
+          IMAGE=${{ vars.DOCKERHUB_USER }}/bookstore-catalog-service
+          docker tag $IMAGE:latest $IMAGE:${{ github.sha }}
+          docker push $IMAGE:latest
+          docker push $IMAGE:${{ github.sha }}
