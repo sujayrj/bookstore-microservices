@@ -1,5 +1,6 @@
 package dev.jeppu.catalogservice;
 
+import dev.jeppu.CatalogServiceApplication;
 import org.springframework.boot.SpringApplication;
 
 public class TestCatalogServiceApplication {
