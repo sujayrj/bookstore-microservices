@@ -52,12 +52,7 @@ public class ProductService {
             throw new ProductAlreadyExistsException("Product with code: " + product.code()
                     + " already exists. Cannot create a new Product with same code");
         }
-        ProductEntity entity = new ProductEntity();
-        entity.setCode(product.code());
-        entity.setName(product.name());
-        entity.setDescription(product.description());
-        entity.setImageUrl(product.imageUrl());
-        entity.setPrice(product.price());
+        ProductEntity entity = ProductMapper.toProductEntity(product);
         ProductEntity savedProduct = productRepository.save(entity);
         log.info(
                 "Product with code : {} was persisted successfully with id : {}",
