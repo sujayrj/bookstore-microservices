@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products")
-public class ProductEntity {
+class ProductEntity {
     @Id
     @SequenceGenerator(name = "product_id_seq_gen", sequenceName = "product_id_seq", allocationSize = 50)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_seq_gen")
@@ -24,47 +24,47 @@ public class ProductEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
-    public Long getId() {
+    Long getId() {
         return id;
     }
 
-    public String getCode() {
+    String getCode() {
         return code;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public String getDescription() {
+    String getDescription() {
         return description;
     }
 
-    public String getImageUrl() {
+    String getImageUrl() {
         return imageUrl;
     }
 
-    public BigDecimal getPrice() {
+    BigDecimal getPrice() {
         return price;
     }
 
-    public void setCode(String code) {
+    void setCode(String code) {
         this.code = code;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 
-    public void setImageUrl(String imageUrl) {
+    void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    public void setPrice(BigDecimal price) {
+    void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

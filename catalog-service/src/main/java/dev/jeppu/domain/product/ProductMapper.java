@@ -1,7 +1,7 @@
 package dev.jeppu.domain.product;
 
-public class ProductMapper {
-    public static Product toProduct(ProductEntity productEntity) {
+class ProductMapper {
+    static Product toProduct(ProductEntity productEntity) {
         Product product = new Product(
                 productEntity.getCode(),
                 productEntity.getName(),
@@ -11,7 +11,7 @@ public class ProductMapper {
         return product;
     }
 
-    public static ProductEntity toProductEntity(Product product) {
+    static ProductEntity toProductEntity(Product product) {
         ProductEntity entity = new ProductEntity();
         entity.setCode(product.code());
         entity.setName(product.name());
