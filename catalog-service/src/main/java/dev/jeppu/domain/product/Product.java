@@ -11,4 +11,4 @@ public record Product(
         String description,
         String imageUrl,
 
-        @NotNull(message = "Price cannot be null") @DecimalMin(value = "0.1", message = "Minimum Price must be greater than 0.5") BigDecimal price) {}
+        @NotNull(message = "Price cannot be null") @DecimalMin(value = "0.1", message = "Minimum Price must be greater than or equal to 0.1") BigDecimal price) {}
