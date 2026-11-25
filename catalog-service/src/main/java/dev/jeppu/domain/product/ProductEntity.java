@@ -14,10 +14,10 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_seq_gen")
     private Long id;
 
-    @NotEmpty(message = "Product Code cannot be blank") @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String code;
 
-    @NotEmpty(message = "Product Name cannot be blank") @Column(nullable = false)
+    @Column(nullable = false)
     private String name;
 
     private String description;
@@ -25,7 +25,7 @@ public class ProductEntity {
     private String imageUrl;
 
     @Column(nullable = false)
-    @NotNull(message = "Product Price cannot be null") @DecimalMin("0.1") private BigDecimal price;
+    private BigDecimal price;
 
     public Long getId() {
         return id;
