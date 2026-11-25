@@ -6,7 +6,7 @@ public class ProductAlreadyExistsException extends RuntimeException {
                 "Product with code: " + code + " already exists. Cannot create a new Product with same code");
     }
 
-    public ProductAlreadyExistsException(String message) {
+    ProductAlreadyExistsException(String message) {
         super(message);
     }
 }
