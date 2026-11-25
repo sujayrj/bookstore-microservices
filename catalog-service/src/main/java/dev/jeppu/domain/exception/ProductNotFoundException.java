@@ -6,7 +6,7 @@ public class ProductNotFoundException extends RuntimeException {
         return new ProductNotFoundException(message);
     }
 
-    public ProductNotFoundException(String message) {
+    ProductNotFoundException(String message) {
         super(message);
     }
 }
