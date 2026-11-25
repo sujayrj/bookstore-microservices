@@ -49,8 +49,7 @@ public class ProductService {
     public Product createProduct(Product product) {
         Optional<ProductEntity> optionalProduct = productRepository.findProductEntityByCode(product.code());
         if (optionalProduct.isPresent()) {
-            throw new ProductAlreadyExistsException("Product with code: " + product.code()
-                    + " already exists. Cannot create a new Product with same code");
+            throw ProductAlreadyExistsException.forCode(product.code());
         }
         ProductEntity entity = ProductMapper.toProductEntity(product);
         ProductEntity savedProduct = productRepository.save(entity);
