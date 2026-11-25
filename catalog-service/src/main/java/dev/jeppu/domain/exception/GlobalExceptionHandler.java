@@ -20,9 +20,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ProductAlreadyExistsException.class)
     public ResponseEntity<ProblemDetail> handleProductAlreadyExistsException(ProductAlreadyExistsException exception) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
         problemDetail.setTitle("Product already exists");
         problemDetail.setProperty("timestamp", Instant.now());
-        return ResponseEntity.badRequest().body(problemDetail);
+        return new ResponseEntity<>(problemDetail, HttpStatus.CONFLICT);
     }
 }
