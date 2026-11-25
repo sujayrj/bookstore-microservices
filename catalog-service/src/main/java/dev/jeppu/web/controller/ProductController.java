@@ -4,10 +4,11 @@ import dev.jeppu.domain.product.PageResponse;
 import dev.jeppu.domain.product.Product;
 import dev.jeppu.domain.product.ProductService;
 import jakarta.validation.Valid;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -28,6 +29,10 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
         Product savedProduct = productService.createProduct(product);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{code}")
+                .buildAndExpand(savedProduct.code())
+                .toUri();
+        return ResponseEntity.created(uri).body(savedProduct);
     }
 }
