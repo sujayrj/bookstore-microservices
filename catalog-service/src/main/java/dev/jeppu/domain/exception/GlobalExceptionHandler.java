@@ -1,5 +1,6 @@
 package dev.jeppu.domain.exception;
 
+import dev.jeppu.domain.product.InvalidCursorException;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -24,5 +25,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setTitle("Product already exists");
         problemDetail.setProperty("timestamp", Instant.now());
         return new ResponseEntity<>(problemDetail, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidCursorException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidCursorException(InvalidCursorException exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        problemDetail.setTitle("Invalid cursor");
+        problemDetail.setProperty("timestamp", Instant.now());
+        return new ResponseEntity<>(problemDetail, HttpStatus.BAD_REQUEST);
     }
 }
