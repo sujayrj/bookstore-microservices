@@ -1,4 +1,4 @@
-package dev.jeppu.domain;
+package dev.jeppu.domain.models;
 
 import jakarta.persistence.Embeddable;
 
