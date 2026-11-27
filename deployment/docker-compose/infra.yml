@@ -1,4 +1,3 @@
-
 services:
   catalog-db:
     image: postgres:16-alpine
@@ -6,7 +5,7 @@ services:
     restart: unless-stopped
 
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "${CATALOG_DB_PORT}:5432"
 
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -18,11 +17,52 @@ services:
       - ./init/catalog-db:/docker-entrypoint-initdb.d:ro
 
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
+  order-db:
+    image: postgres:16-alpine
+    container_name: ${ORDER_DB}
+    restart: unless-stopped
+    environment:
+        POSTGRES_USERNAME: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PWD}
+        POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${ORDER_DB_PORT}:5432"
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
+      - ./init/order-db:/docker-entrypoint-initdb.d:ro
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bookstore-rabbitmq:
+    image: rabbitmq:3.12.11-alpine
+    container_name: bookstore-rabbitmq
+    environment:
+        RABBITMQ_DEFAULT_USER: ${BOOKSTORE_RABBITMQ_USER:guest}
+        RABBITMQ_DEFAULT_PASS: ${BOOKSTORE_RABBITMQ_PWD:guest}
+    ports:
+      - "${BOOKSTORE_RABBITMQ_PORT}:5672"
+      - "${BOOKSTORE_RABBITMQ_WEB_PORT}:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 30s
+      timeout: 30s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
 volumes:
   catalog_db_data:
     name: catalog_db_data
+  order_db_data:
+    name: order_db_data
