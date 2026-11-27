@@ -1,6 +1,8 @@
 package dev.jeppu.domain;
 
 import jakarta.persistence.*;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -23,6 +25,7 @@ public class OrderItemEntity {
     @Column(nullable = false)
     private Integer quantity;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
@@ -30,7 +33,4 @@ public class OrderItemEntity {
     @Version
     private Long version;
 
-    public void setOrder(OrderEntity orderEntity) {
-        this.order = orderEntity;
-    }
 }
