@@ -46,11 +46,13 @@ services:
     image: rabbitmq:3.12.11-alpine
     container_name: bookstore-rabbitmq
     environment:
-        RABBITMQ_DEFAULT_USER: ${BOOKSTORE_RABBITMQ_USER:guest}
-        RABBITMQ_DEFAULT_PASS: ${BOOKSTORE_RABBITMQ_PWD:guest}
+        RABBITMQ_DEFAULT_USER: ${BOOKSTORE_RABBITMQ_USER:-guest}
+        RABBITMQ_DEFAULT_PASS: ${BOOKSTORE_RABBITMQ_PWD:-guest}
     ports:
       - "${BOOKSTORE_RABBITMQ_PORT}:5672"
       - "${BOOKSTORE_RABBITMQ_WEB_PORT}:15672"
+    volumes:
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
     healthcheck:
       test: rabbitmq-diagnostics check_port_connectivity
       interval: 30s
