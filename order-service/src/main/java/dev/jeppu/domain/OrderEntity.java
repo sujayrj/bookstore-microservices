@@ -36,6 +36,7 @@ public class OrderEntity {
     private OrderStatus status;
 
     private String comments;
+    @Column(updatable = false, nullable = false)
     private Instant createdAt;
     private Instant updatedAt;
 
