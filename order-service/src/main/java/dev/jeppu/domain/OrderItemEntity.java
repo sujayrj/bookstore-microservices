@@ -1,9 +1,8 @@
-package dev.jeppu.domain.models;
+package dev.jeppu.domain;
 
 import jakarta.persistence.*;
-import lombok.Setter;
-
 import java.math.BigDecimal;
+import lombok.Setter;
 
 @Entity
 @Table(name = "order_items")
@@ -33,4 +32,19 @@ public class OrderItemEntity {
     @Version
     private Long version;
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }

@@ -1,5 +1,8 @@
-package dev.jeppu.domain.models;
+package dev.jeppu.domain;
 
+import dev.jeppu.domain.models.Address;
+import dev.jeppu.domain.models.Customer;
+import dev.jeppu.domain.models.OrderStatus;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -36,8 +39,10 @@ public class OrderEntity {
     private OrderStatus status;
 
     private String comments;
+
     @Column(updatable = false, nullable = false)
     private Instant createdAt;
+
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -49,6 +54,7 @@ public class OrderEntity {
     @PrePersist
     void onCreate() {
         this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     @PreUpdate
@@ -59,5 +65,37 @@ public class OrderEntity {
     public void addItem(OrderItemEntity item) {
         this.items.add(item);
         item.setOrder(this);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public void setDeliveryAddress(Address deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }
