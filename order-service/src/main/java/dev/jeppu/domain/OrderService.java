@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final SecurityService securityService;
+    private final OrderValidator orderValidator;
 
     public CreateOrderResponse createOrder(CreateOrderRequest orderRequest) {
+        orderValidator.validateOrder(orderRequest);
         OrderEntity orderEntity = OrderMapper.toOrderEntity(orderRequest);
+
         orderEntity.setUsername(securityService.getLoginUserName());
         OrderEntity savedOrder = orderRepository.save(orderEntity);
         log.info(
