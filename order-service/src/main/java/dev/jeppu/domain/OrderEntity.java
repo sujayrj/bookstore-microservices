@@ -98,4 +98,8 @@ public class OrderEntity {
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
+
+    public void setItems(List<OrderItemEntity> items) {
+        this.items = items;
+    }
 }

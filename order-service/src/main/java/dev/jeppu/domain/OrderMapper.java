@@ -3,8 +3,6 @@ package dev.jeppu.domain;
 import dev.jeppu.domain.models.CreateOrderRequest;
 import dev.jeppu.domain.models.OrderItem;
 import dev.jeppu.domain.models.OrderStatus;
-
-import java.util.List;
 import java.util.UUID;
 
 public class OrderMapper {
@@ -15,9 +13,7 @@ public class OrderMapper {
         orderEntity.setCustomer(orderRequest.customer());
         orderEntity.setDeliveryAddress(orderRequest.deliveryAddress());
 
-        orderRequest.items().stream()
-                .map(OrderMapper::toOrderItemEntity)
-                .forEach(orderEntity::addItem);
+        orderRequest.items().stream().map(OrderMapper::toOrderItemEntity).forEach(orderEntity::addItem);
 
         return orderEntity;
     }
